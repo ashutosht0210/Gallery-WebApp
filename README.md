@@ -1,6 +1,6 @@
-# 📸 Gallery WebApp
+# ✨ LUMINA — Gallery WebApp
 
-A simple, dark-themed photo gallery built with **React** and **Vite**, powered by the [Picsum Photos API](https://picsum.photos/). Browse a paginated grid of photos along with the photographer's name for each image.
+A premium, dark-themed photo gallery built with **React 19**, **Vite**, and **Tailwind CSS v4**, powered by the [Picsum Photos API](https://picsum.photos/). Explore a curated collection of beautiful photography with smooth animations, skeleton loading states, and a sleek amber-accented design.
 
 ## 🔗 Live Demo
 
@@ -8,46 +8,51 @@ A simple, dark-themed photo gallery built with **React** and **Vite**, powered b
 
 ## ✨ Features
 
-- Fetches photo data from the Picsum Photos API (`/v2/list`)
-- Responsive grid layout with a sleek black background and white text
-- Pagination controls (**Prev** / **Next**) to browse through pages of photos
-- Displays the current page number
-- Built with modern React (hooks: `useState`, `useEffect`) and Axios for data fetching
+- **Curated Photo Grid** — Fetches and displays 12 photos per page from the Picsum Photos API in a responsive grid layout
+- **Skeleton Loading** — Animated pulse placeholders while images are being fetched, providing a seamless loading experience
+- **Interactive Photo Cards** — Hover-to-zoom image previews with amber glow effects; each card links directly to the full-resolution source
+- **Glassmorphism Pagination** — Frosted-glass pagination bar with Prev/Next controls, page indicator, and disabled state handling for the first page
+- **Lazy Image Loading** — Images use native `loading="lazy"` for improved performance and faster initial page loads
+- **Dark Premium Theme** — Zinc-950 background with amber/gold gradient accents, custom text selection colors, and smooth micro-animations throughout
+- **Fully Responsive** — Adapts from 2-column on mobile to 4-column on desktop using a CSS Grid layout
 
 ## 🛠️ Tech Stack
 
-- [React](https://react.dev/)
-- [Vite](https://vitejs.dev/) — build tool & dev server
+- [React 19](https://react.dev/) — UI library
+- [Vite 8](https://vitejs.dev/) — Build tool & dev server
+- [Tailwind CSS v4](https://tailwindcss.com/) — Utility-first CSS framework (via `@tailwindcss/vite` plugin)
 - [Axios](https://axios-http.com/) — HTTP client
-- Tailwind CSS (utility classes) — styling
-- [Picsum Photos API](https://picsum.photos/) — image data source
+- [Picsum Photos API](https://picsum.photos/) — Image data source
+- [gh-pages](https://www.npmjs.com/package/gh-pages) — GitHub Pages deployment
 
 ## 📁 Project Structure
 
 ```
 Gallery-WebApp/
-├── node_modules/
 ├── src/
 │   ├── components/
-│   │   ├── Footer.jsx        # Pagination controls (Prev / Next / Page indicator)
-│   │   └── PrintUserData.jsx # Renders the photo grid
-│   ├── App.jsx                # Main app component
-│   ├── index.css
-│   └── main.jsx
+│   │   ├── Card.jsx            # Individual photo card with hover effects & author info
+│   │   ├── Footer.jsx          # Glassmorphism pagination bar (Prev / Next / Page indicator)
+│   │   ├── Loading.jsx          # Skeleton loader + card rendering logic
+│   │   └── PrintUserData.jsx    # Responsive grid container for photo cards
+│   ├── App.jsx                  # Main app — data fetching, header, layout
+│   ├── index.css                # Tailwind CSS v4 import
+│   └── main.jsx                 # React DOM entry point
+├── dist/                        # Production build output
 ├── .gitignore
 ├── eslint.config.js
 ├── index.html
 ├── package.json
 ├── package-lock.json
-└── vite.config.js
+├── vite.config.js
+└── LICENSE
 ```
-
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v16 or later recommended)
+- [Node.js](https://nodejs.org/) (v18 or later recommended)
 - npm
 
 ### Installation
@@ -76,17 +81,39 @@ Gallery-WebApp/
 npm run build
 ```
 
+### Deploy to GitHub Pages
+
+```bash
+npm run deploy
+```
+
 ## 🧩 How It Works
 
-`App.jsx` keeps track of the current page (`index`) in state. Whenever `index` changes, it fetches a new batch of 15 photos from the Picsum Photos API:
+### Data Flow
+
+`App.jsx` manages the current page (`index`) in state. Whenever `index` changes, it fetches a new batch of 12 photos from the Picsum Photos API:
 
 ```
-https://picsum.photos/v2/list?page={index}&limit=15
+https://picsum.photos/v2/list?page={index}&limit=12
 ```
 
-The fetched data is passed down to:
-- **`PrintUserData`** — renders each photo with the photographer's name
-- **`Footer`** (rendered as `Button`) — provides Prev/Next pagination, updating `index` and triggering a re-fetch
+The fetched data flows through a clean component hierarchy:
+
+```
+App → PrintUserData → Loading → Card
+                    ↘ (skeleton placeholders when loading)
+App → Footer (Button) → updates index → triggers re-fetch
+```
+
+### Component Responsibilities
+
+| Component | Role |
+|---|---|
+| **`App.jsx`** | Root component — fetches data, renders header with gradient branding, orchestrates layout |
+| **`PrintUserData.jsx`** | Responsive grid container — wraps cards in a 2→4 column CSS Grid |
+| **`Loading.jsx`** | Conditional renderer — shows `Card` components when data is available, or 24 animated skeleton placeholders while loading |
+| **`Card.jsx`** | Individual photo card — displays image with hover zoom, photographer name, and links to the original source |
+| **`Footer.jsx`** | Pagination controls — glassmorphism pill bar with Prev/Next buttons, page number display, and first-page disable logic |
 
 ## 📄 License
 
@@ -94,4 +121,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-Built with ❤️ using React + Vite
+Built with ❤️ using React + Vite + Tailwind CSS
